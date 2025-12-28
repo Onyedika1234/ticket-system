@@ -21,7 +21,7 @@ model User {
   department Department
   programme Programme
   role Role    @default(USER)
-  paymentStatus Boolean  @default(false)
+  paymentStatus paymentStatus @default(OWING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -31,7 +31,7 @@ enum Department {
   ARTS
   COMMERCE
 }
-
+  
 enum Role {
   ADMIN
   USER
@@ -44,4 +44,9 @@ enum Programme {
   UTME
   POST_UTME
   JUPEB
+}
+
+enum paymentStatus {
+  OWING
+  PAID
 }
