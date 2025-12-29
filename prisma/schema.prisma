@@ -5,12 +5,12 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
+  url = env("DATABASE_URL")
 }
 
 model User {
@@ -18,8 +18,8 @@ model User {
   email     String   @unique
   password String
   name      String
-  department Department
-  programme Programme
+  department Department @default(SCIENCE)
+  programme Programme @default(UTME)
   role Role    @default(USER)
   paymentStatus paymentStatus @default(OWING)
   createdAt DateTime @default(now())
@@ -29,7 +29,7 @@ model User {
 enum Department {
   SCIENCE
   ARTS
-  COMMERCE
+  COMMERCIAL
 }
   
 enum Role {

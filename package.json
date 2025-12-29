@@ -20,7 +20,8 @@
   "homepage": "https://github.com/Onyedika1234/ticket-system#readme",
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.2.0",
-    "@prisma/client": "^7.2.0",
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^6.19.1",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -30,11 +31,12 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.16.0",
+    "pg": "^8.16.3",
+    "prisma": "^6.19.1",
     "redis": "^5.10.0"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
-    "nodemon": "^3.1.11",
-    "prisma": "^7.2.0"
+    "nodemon": "^3.1.11"
   }
 }

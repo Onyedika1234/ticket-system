@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { globalRateLimit } from "./utils/rateLimit.js";
 import { errorHandling } from "./utils/errorHandling.js";
+import authRouter from "./routes/auth.route.js";
 dotenv.config();
 
 const app = express();
@@ -17,6 +18,8 @@ app.use(cookieParser());
 app.use(globalRateLimit);
 
 app.use(errorHandling);
+
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send("API is running...");

@@ -6,18 +6,7 @@ dotenv.config();
 
 export const signUp = async (req, res, next) => {
   try {
-    const { name, email, password, programme, department } = req.credentials;
-
-    // const sameName = await prisma.user.findMany({
-    //   where: { name },
-    //   select: { name: true },
-    // });
-
-    // if (sameName) {
-    //   const err = new Error("Two User Can't have the same name");
-    //   err.statusCode = 400;
-    //   throw err;
-    // }
+    const { name, email, password, department, programme } = req.credentials;
 
     const emailExist = await prisma.user.findUnique({
       where: { email },
