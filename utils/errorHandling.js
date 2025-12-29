@@ -1,5 +1,5 @@
 export const errorHandling = (err, req, res, next) => {
-  console.log(err.stack);
+  // console.log(err.stack);
   const statusCode = err.statusCode || 500;
   const message = err.message || "Something went wrong";
 

@@ -14,3 +14,5 @@ export const loginData = (body) => {
     password: body.password,
   };
 };
+
+export const roleData = (body) => body.password;

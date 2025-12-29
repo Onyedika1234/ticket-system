@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import { globalRateLimit } from "./utils/rateLimit.js";
 import { errorHandling } from "./utils/errorHandling.js";
 import authRouter from "./routes/auth.route.js";
+import studentRoute from "./routes/students.route.js";
+import userRoute from "./routes/user.route.js";
 dotenv.config();
 
 const app = express();
@@ -20,6 +22,10 @@ app.use(globalRateLimit);
 app.use(errorHandling);
 
 app.use("/v1/auth", authRouter);
+
+app.use("/v1/students", studentRoute);
+
+app.use("/v1/user", userRoute);
 
 app.get("/", (req, res) => {
   res.send("API is running...");

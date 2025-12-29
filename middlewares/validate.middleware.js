@@ -1,4 +1,4 @@
-import { signUpdata, loginData } from "../utils/dtos.js";
+import { signUpdata, loginData, roleData } from "../utils/dtos.js";
 export const validateSignUp = (req, res, next) => {
   let { name, email, password, department, programme } = signUpdata(req.body);
 
@@ -23,16 +23,6 @@ export const validateSignUp = (req, res, next) => {
   password = password.trim();
   department = department.trim().toUpperCase();
   programme = programme.trim().toUpperCase();
-
-  // if (
-  //   department !== "SCIENCE" ||
-  //   department !== "COMMERCIAL" ||
-  //   department !== "ART"
-  // ) {
-  //   const err = new Error("Department can eithr be Science, Commercial or Art");
-  //   err.statusCode = 400;
-  //   throw err;
-  // }
 
   const validDepartments = ["SCIENCE", "COMMERCIAL", "ART"];
   if (!validDepartments.includes(department)) {
@@ -75,5 +65,26 @@ export const validateLogin = (req, res, next) => {
 
   req.logins = { email, password };
 
+  next();
+};
+
+export const validateRole = (req, res, next) => {
+  let password = roleData(req.body);
+
+  if (!password) {
+    const err = new Error("Admin Password is required");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (typeof password !== "string") {
+    const err = new Error("Unprocessable entities");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  password = password.trim();
+
+  req.adminPassword = password;
   next();
 };
