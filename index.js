@@ -19,7 +19,7 @@ app.use(globalRateLimit);
 
 app.use(errorHandling);
 
-app.use("/auth", authRouter);
+app.use("/v1/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send("API is running...");
