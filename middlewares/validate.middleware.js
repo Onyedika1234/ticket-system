@@ -1,4 +1,4 @@
-import { signUpdata, loginData, roleData } from "../utils/dtos.js";
+import { signUpdata, loginData, roleData, paymentData } from "../utils/dtos.js";
 
 // Validate Sign Up Data
 export const validateSignUp = (req, res, next) => {
@@ -92,5 +92,19 @@ export const validateRole = (req, res, next) => {
   password = password.trim();
 
   req.adminPassword = password;
+  next();
+};
+
+export const validatePayment = (req, res, next) => {
+  let amount = paymentData(req.body);
+
+  if (typeof amount !== "number") {
+    const err = new Error("Unprocessible entities");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  req.paymentAmount = amount;
+
   next();
 };

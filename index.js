@@ -7,6 +7,7 @@ import { errorHandling } from "./utils/errorHandling.js";
 import authRouter from "./routes/auth.route.js";
 import studentRoute from "./routes/students.route.js";
 import userRoute from "./routes/user.route.js";
+import paymentRoute from "./routes/payment.route.js";
 dotenv.config();
 
 const app = express();
@@ -26,6 +27,8 @@ app.use("/v1/auth", authRouter);
 app.use("/v1/students", studentRoute);
 
 app.use("/v1/user", userRoute);
+
+app.use("/v1/payments", paymentRoute);
 
 app.get("/", (req, res) => {
   res.send("API is running...");

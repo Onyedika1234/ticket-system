@@ -18,3 +18,5 @@ export const loginData = (body) => {
 };
 
 export const roleData = (body) => body.password;
+
+export const paymentData = (body) => body.amount;
