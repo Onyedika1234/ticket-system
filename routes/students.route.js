@@ -8,10 +8,13 @@ import {
 
 const studentRoute = Router();
 
+//Get all students
 studentRoute.get("/", authorize, rbac, getAllStudents);
 
+//Get single student
 studentRoute.get("/:studentId", authorize, rbac, getStudent);
 
+//Delete student
 studentRoute.delete("/:studentId", authorize, rbac, deleteStudent);
 
 export default studentRoute;

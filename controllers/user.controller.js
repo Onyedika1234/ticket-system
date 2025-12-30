@@ -2,6 +2,7 @@ import prisma from "../utils/prisma.js";
 import dotenv from "dotenv";
 dotenv.config();
 
+// Get user profile
 export const getProfile = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -29,6 +30,7 @@ export const getProfile = async (req, res, next) => {
   }
 };
 
+// Update user role to ADMIN
 export const updateRole = async (req, res, next) => {
   try {
     const userId = req.user.id;

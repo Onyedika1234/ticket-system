@@ -1,3 +1,4 @@
+// global error handling middleware
 export const errorHandling = (err, req, res, next) => {
   // console.log(err.stack);
   const statusCode = err.statusCode || 500;

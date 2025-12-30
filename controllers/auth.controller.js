@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
+// Sign Up a new user
 export const signUp = async (req, res, next) => {
   try {
     const { name, email, password, department, programme } = req.credentials;
@@ -61,11 +62,9 @@ export const signUp = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-
-  //Email Exists
-  //Check name
-  //Get password, salt, hash, store
 };
+
+// Login an existing user
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.logins;
@@ -108,6 +107,8 @@ export const login = async (req, res, next) => {
     next(error);
   }
 };
+
+// Logout a user
 export const logout = async (req, res, next) => {
   try {
     res.clearCookie("token");

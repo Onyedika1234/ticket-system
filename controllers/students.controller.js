@@ -1,4 +1,6 @@
 import prisma from "../utils/prisma.js";
+
+// Get all students
 export const getAllStudents = async (req, res, next) => {
   try {
     const students = await prisma.user.findMany({
@@ -23,6 +25,7 @@ export const getAllStudents = async (req, res, next) => {
   }
 };
 
+// Get a single student by ID
 export const getStudent = async (req, res, next) => {
   try {
     const { studentId } = req.params;
@@ -50,6 +53,7 @@ export const getStudent = async (req, res, next) => {
   }
 };
 
+// Delete a student by ID
 export const deleteStudent = async (req, res, next) => {
   try {
     const { studentId } = req.params;

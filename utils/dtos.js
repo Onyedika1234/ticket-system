@@ -1,3 +1,4 @@
+// signUpdata extracts and returns relevant fields for user sign-up
 export const signUpdata = (body) => {
   return {
     name: body.name,
@@ -8,6 +9,7 @@ export const signUpdata = (body) => {
   };
 };
 
+// loginData extracts and returns relevant fields for user login
 export const loginData = (body) => {
   return {
     email: body.email,

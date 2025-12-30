@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import prisma from "../utils/prisma.js";
 dotenv.config();
 
+// Authentication Middleware
 export const authorize = (req, res, next) => {
   try {
     const token = req.cookies.token;
@@ -23,7 +24,7 @@ export const authorize = (req, res, next) => {
   }
 };
 
-//Admin ROle Based Access Control Middleware
+//Admin Role Based Access Control Middleware
 export const rbac = async (req, res, next) => {
   try {
     const userId = req.user.id;

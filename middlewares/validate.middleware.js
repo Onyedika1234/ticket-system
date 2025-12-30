@@ -1,4 +1,6 @@
 import { signUpdata, loginData, roleData } from "../utils/dtos.js";
+
+// Validate Sign Up Data
 export const validateSignUp = (req, res, next) => {
   let { name, email, password, department, programme } = signUpdata(req.body);
 
@@ -24,6 +26,7 @@ export const validateSignUp = (req, res, next) => {
   department = department.trim().toUpperCase();
   programme = programme.trim().toUpperCase();
 
+  // Validate Department
   const validDepartments = ["SCIENCE", "COMMERCIAL", "ART"];
   if (!validDepartments.includes(department)) {
     const err = new Error(
@@ -33,6 +36,7 @@ export const validateSignUp = (req, res, next) => {
     throw err;
   }
 
+  // Validate Programme
   const validProgrammes = ["WAEC", "NECO", "UTME", "GCE", "POST_UTME", "JUPEB"];
   if (!validProgrammes.includes(programme)) {
     const err = new Error(
@@ -47,6 +51,7 @@ export const validateSignUp = (req, res, next) => {
   next();
 };
 
+// Validate Login Data
 export const validateLogin = (req, res, next) => {
   let { email, password } = loginData(req.body);
 
@@ -68,6 +73,7 @@ export const validateLogin = (req, res, next) => {
   next();
 };
 
+// Validate Role Update Data
 export const validateRole = (req, res, next) => {
   let password = roleData(req.body);
 
