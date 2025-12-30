@@ -25,16 +25,16 @@ export const getAllStudents = async (req, res, next) => {
 
 export const getStudent = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { studentId } = req.params;
 
-    if (!id) {
+    if (!studentId) {
       const err = new Error("Id of student is required");
       err.statusCode = 400;
       throw err;
     }
 
     const student = await prisma.user.findUnique({
-      where: { id },
+      where: { id: studentId, role: "USER" },
       select: { name: true, email: true, department: true, programme: true },
     });
 
@@ -45,6 +45,31 @@ export const getStudent = async (req, res, next) => {
     }
 
     res.status(200).json({ success: true, student });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteStudent = async (req, res, next) => {
+  try {
+    const { studentId } = req.params;
+
+    const student = await prisma.user.findUnique({
+      where: {
+        id: studentId,
+        role: "USER",
+      },
+      select: { id: true },
+    });
+    if (!student) {
+      const err = new Error("Student not found");
+      err.statusCode = 404;
+      throw err;
+    }
+
+    await prisma.user.delete({ where: { id: student.id } });
+
+    res.sendStatus(204);
   } catch (error) {
     next(error);
   }
