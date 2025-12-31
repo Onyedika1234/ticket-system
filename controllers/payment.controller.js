@@ -5,7 +5,7 @@
 //The amount paid is taken and divided by the standard amount to determine the number of months paid for
 //The end date is calculated by adding the number of months paid for to the start date
 //The payment record is then created in the database
-import { addMonths, format } from "date-fns";
+import { addDays, format } from "date-fns";
 import prisma from "../utils/prisma.js";
 import dotenv from "dotenv";
 
@@ -35,9 +35,9 @@ export const createPayment = async (req, res, next) => {
 
     const standardAmount = parseFloat(process.env.FEES);
 
-    const monthsPaid = Math.floor(paymentAmount / standardAmount);
+    const days = Math.round((paymentAmount / standardAmount) * 30);
 
-    const endDate = addMonths(new Date(), monthsPaid);
+    const endDate = addDays(new Date(), days);
 
     const formattedEndDate = format(endDate, "yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -47,7 +47,7 @@ export const createPayment = async (req, res, next) => {
         amount: paymentAmount,
         startDate: new Date(),
         endDate: new Date(formattedEndDate),
-        duration: monthsPaid,
+        duration: days,
       },
     });
     res.status(201).json({
