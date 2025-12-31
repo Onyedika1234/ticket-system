@@ -40,7 +40,6 @@ export const createPayment = async (req, res, next) => {
     const endDate = addDays(new Date(), days);
 
     const formattedEndDate = format(endDate, "yyyy-MM-dd HH:mm:ss.SSS");
-
     const payment = await prisma.payment.create({
       data: {
         userId: parseInt(studentId),

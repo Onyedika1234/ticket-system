@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import cron from "node-cron";
 import { globalRateLimit } from "./utils/rateLimit.js";
 import { errorHandling } from "./utils/errorHandling.js";
 import authRouter from "./routes/auth.route.js";
