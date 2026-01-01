@@ -22,6 +22,7 @@ model User {
   programme Programme @default(UTME)
   role Role    @default(USER)
   payments  Payment[]
+  tickets Ticket[]
   paymentStatus paymentStatus @default(OWING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -35,6 +36,15 @@ model Payment {
   startDate DateTime @default(now())
   duration Int //Duration in months(Days)
   endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Ticket {
+  id        String    @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  // status    String   @default("OPEN")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

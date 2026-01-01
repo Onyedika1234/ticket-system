@@ -44,3 +44,36 @@ export const rbac = async (req, res, next) => {
     next(error);
   }
 };
+
+//Ticket authroization Middleware
+export const ticketAuthorization = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true, paymentStatus: true },
+    });
+
+    if (!user) {
+      const err = new Error("User not found");
+      err.statusCode = 404;
+      throw err;
+    }
+
+    if (user.paymentStatus !== "PAID") {
+      const err = new Error("Forbidden: Payment required");
+      err.statusCode = 403;
+      throw err;
+    }
+
+    if (user.role !== "USER") {
+      const err = new Error("Forbidden: Users only");
+      err.statusCode = 403;
+      throw err;
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
