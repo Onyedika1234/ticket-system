@@ -9,9 +9,15 @@ import authRouter from "./routes/auth.route.js";
 import studentRoute from "./routes/students.route.js";
 import userRoute from "./routes/user.route.js";
 import paymentRoute from "./routes/payment.route.js";
+import { updatePaymentStatus } from "./utils/cron.js";
 dotenv.config();
 
 const app = express();
+
+cron.schedule("* * * * * *", updatePaymentStatus, {
+  scheduled: true,
+  timezone: "Africa/Lagos", // Explicitly specify the timezone
+});
 
 app.use(cors());
 
