@@ -16,6 +16,8 @@ export const createPayment = async (req, res, next) => {
     const { studentId } = req.params;
     const { paymentAmount } = req;
 
+    console.log(paymentAmount);
+
     if (!studentId) {
       const err = new Error("Student ID is required");
       err.statusCode = 400;
@@ -23,7 +25,7 @@ export const createPayment = async (req, res, next) => {
     }
 
     const student = await prisma.user.findUnique({
-      where: { id: parseInt(studentId) },
+      where: { id: studentId },
       select: { id: true, name: true, email: true },
     });
 
@@ -39,13 +41,13 @@ export const createPayment = async (req, res, next) => {
 
     const endDate = addDays(new Date(), days);
 
-    const formattedEndDate = format(endDate, "yyyy-MM-dd HH:mm:ss.SSS");
+    // const formattedEndDate = format(endDate, "yyyy-MM-dd HH:mm:ss.SSS");
     const payment = await prisma.payment.create({
       data: {
-        userId: parseInt(studentId),
+        userId: studentId,
         amount: paymentAmount,
         startDate: new Date(),
-        endDate: new Date(formattedEndDate),
+        endDate: new Date(endDate),
         duration: days,
       },
     });

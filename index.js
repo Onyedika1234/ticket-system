@@ -14,10 +14,10 @@ dotenv.config();
 
 const app = express();
 
-cron.schedule("* * * * * *", updatePaymentStatus, {
-  scheduled: true,
-  timezone: "Africa/Lagos", // Explicitly specify the timezone
-});
+// cron.schedule("* * * * * *", updatePaymentStatus, {
+//   scheduled: true,
+//   timezone: "Africa/Lagos", // Explicitly specify the timezone
+// });
 
 app.use(cors());
 
