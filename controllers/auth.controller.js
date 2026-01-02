@@ -2,6 +2,8 @@ import prisma from "../utils/prisma.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import transporter from "../utils/email.js";
+// import {uuidv4 as uuidv4} from "uuid";
 dotenv.config();
 
 // Sign Up a new user
