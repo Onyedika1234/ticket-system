@@ -23,7 +23,8 @@ model User {
   role Role    @default(USER)
   payments  Payment[]
   tickets Ticket[]
-  paymentStatus paymentStatus @default(OWING)
+  // paymentStatus paymentStatus @default(OWING)
+  accessUntil DateTime?   //This shows the time a user has access, it is okay to start empty
   verified Boolean @default(false)
   verificationToken String?
   verificationTokenExpiry DateTime?
@@ -72,7 +73,7 @@ enum Programme {
   JUPEB
 }
 
-enum paymentStatus {
-  OWING
-  PAID
-}
+// enum paymentStatus {
+//   OWING
+//   PAID
+// }

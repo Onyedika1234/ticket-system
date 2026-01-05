@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import prisma from "../utils/prisma.js";
+import { isAfter } from "date-fns";
 dotenv.config();
 
 // Authentication Middleware
@@ -51,7 +52,7 @@ export const ticketAuthorization = async (req, res, next) => {
     const userId = req.user.id;
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { role: true, paymentStatus: true },
+      select: { role: true, accessUntil: true },
     });
 
     if (!user) {
@@ -60,11 +61,17 @@ export const ticketAuthorization = async (req, res, next) => {
       throw err;
     }
 
-    if (user.paymentStatus !== "PAID") {
+    if (isAfter(new Date(), user.accessUntil)) {
       const err = new Error("Forbidden: Payment required");
       err.statusCode = 403;
       throw err;
     }
+
+    // if (user.paymentStatus !== "PAID") {
+    //   const err = new Error("Forbidden: Payment required");
+    //   err.statusCode = 403;
+    //   throw err;
+    // }
 
     if (user.role !== "USER") {
       const err = new Error("Forbidden: Users only");

@@ -18,12 +18,15 @@ export const createPayment = async (req, res, next) => {
 
     console.log(paymentAmount);
 
+    //Check if student Id is given.
+
     if (!studentId) {
       const err = new Error("Student ID is required");
       err.statusCode = 400;
       throw err;
     }
 
+    //Check if student exist.
     const student = await prisma.user.findUnique({
       where: { id: studentId },
       select: { id: true, name: true, email: true },
@@ -35,25 +38,43 @@ export const createPayment = async (req, res, next) => {
       throw err;
     }
 
+    //Get payment history in order to get the last payment date of a user
+    const paymentHistory = await prisma.payment.findMany({
+      where: { userId: studentId },
+      select: { endDate: true },
+    });
+
+    // let startDate;
+
+    //If a user has no payment history, then he is just starting his payment journey with the start date of now, instead the start date will be the day the last payment ended.
+
+    const startDate =
+      paymentHistory.length == 0 ? new Date() : paymentHistory[0].endDate;
+
     const standardAmount = parseFloat(process.env.FEES);
 
     const days = Math.round((paymentAmount / standardAmount) * 30);
 
-    const endDate = addDays(new Date(), days);
+    const endDate = addDays(startDate, days);
 
-    // const formattedEndDate = format(endDate, "yyyy-MM-dd HH:mm:ss.SSS");
-    const payment = await prisma.payment.create({
-      data: {
-        userId: studentId,
-        amount: paymentAmount,
-        startDate: new Date(),
-        endDate: new Date(endDate),
-        duration: days,
-      },
-    });
+    await prisma.$transaction([
+      prisma.payment.create({
+        data: {
+          userId: studentId,
+          amount: paymentAmount,
+          startDate: new Date(startDate),
+          endDate: new Date(endDate),
+          duration: days,
+        },
+      }),
+
+      prisma.user.update({
+        where: { id: studentId },
+        data: { accessUntil: new Date(endDate) },
+      }),
+    ]);
     res.status(201).json({
       message: "Payment record created successfully",
-      payment,
     });
   } catch (error) {
     next(error);
