@@ -8,6 +8,7 @@
 import { addDays, format } from "date-fns";
 import prisma from "../utils/prisma.js";
 import dotenv from "dotenv";
+import redisClient from "../utils/redis.js";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ export const createPayment = async (req, res, next) => {
   try {
     const { studentId } = req.params;
     const { paymentAmount } = req;
+    const idempotencyKey = req.key;
 
     console.log(paymentAmount);
 
@@ -57,7 +59,7 @@ export const createPayment = async (req, res, next) => {
 
     const endDate = addDays(startDate, days);
 
-    await prisma.$transaction([
+    const data = await prisma.$transaction([
       prisma.payment.create({
         data: {
           userId: studentId,
@@ -73,7 +75,14 @@ export const createPayment = async (req, res, next) => {
         data: { accessUntil: new Date(endDate) },
       }),
     ]);
-    res.status(201).json({
+
+    await redisClient.setEx(
+      `idempotency/${idempotencyKey}`,
+      1800,
+      data[1].name
+    );
+
+    await res.status(201).json({
       message: "Payment record created successfully",
     });
   } catch (error) {

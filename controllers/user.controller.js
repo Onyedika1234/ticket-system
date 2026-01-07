@@ -1,5 +1,6 @@
 import prisma from "../utils/prisma.js";
 import dotenv from "dotenv";
+import { isAfter } from "date-fns";
 dotenv.config();
 
 // Get user profile
@@ -15,8 +16,11 @@ export const getProfile = async (req, res, next) => {
         department: true,
         programme: true,
         role: true,
+        accessUntil: true,
       },
     });
+
+    // const paymentStatus;
 
     if (!profile) {
       const err = new Error("User Profile not found");
@@ -24,7 +28,13 @@ export const getProfile = async (req, res, next) => {
       throw err;
     }
 
-    res.status(200).json({ success: true, profile });
+    const paymentStatus = isAfter(new Date(), profile.accessUntil)
+      ? "OWING"
+      : "PAID";
+
+    res
+      .status(200)
+      .json({ success: true, profile: { ...profile, paymentStatus } });
   } catch (error) {
     next(error);
   }
