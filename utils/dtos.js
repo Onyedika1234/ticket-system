@@ -30,3 +30,5 @@ export const ticketOutput = (ticket) => {
     createdAt: ticket.createdAt,
   };
 };
+
+export const ticketValidity = (body) => body.ticketId;

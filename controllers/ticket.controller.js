@@ -19,3 +19,23 @@ export const generateTicket = async (req, res, next) => {
     next(error);
   }
 };
+
+export const checkTicketValidity = async (req, res, next) => {
+  try {
+    const { ticketId } = req.ticketId;
+
+    const ticketExist = await prisma.ticket.findUnique({
+      where: { id: ticketId },
+      select: { id: true, user: true },
+    });
+
+    if (!ticketExist) {
+      const err = Error("Ticket not found");
+      err.statusCode = 404;
+      throw err;
+    }
+    res.status(200).json({ success: true, ticket: ticketExist });
+  } catch (error) {
+    next(error);
+  }
+};

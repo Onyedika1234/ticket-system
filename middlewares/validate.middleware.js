@@ -1,4 +1,10 @@
-import { signUpdata, loginData, roleData, paymentData } from "../utils/dtos.js";
+import {
+  signUpdata,
+  loginData,
+  roleData,
+  paymentData,
+  ticketValidity,
+} from "../utils/dtos.js";
 
 // Validate Sign Up Data
 export const validateSignUp = (req, res, next) => {
@@ -30,7 +36,7 @@ export const validateSignUp = (req, res, next) => {
   const validDepartments = ["SCIENCE", "COMMERCIAL", "ART"];
   if (!validDepartments.includes(department)) {
     const err = new Error(
-      "Department can either be Science, Commercial or Art"
+      "Department can either be Science, Commercial or Art",
     );
     err.statusCode = 400;
     throw err;
@@ -40,7 +46,7 @@ export const validateSignUp = (req, res, next) => {
   const validProgrammes = ["WAEC", "NECO", "UTME", "GCE", "POST_UTME", "JUPEB"];
   if (!validProgrammes.includes(programme)) {
     const err = new Error(
-      "Program selected is not offered in this institution."
+      "Program selected is not offered in this institution.",
     );
     err.statusCode = 400;
     throw err;
@@ -100,11 +106,29 @@ export const validatePayment = (req, res, next) => {
 
   if (typeof amount !== "number") {
     const err = new Error("Unprocessible entities");
-    err.statusCode = 400;
+    err.statusCode = 429;
     throw err;
   }
 
   req.paymentAmount = amount;
 
   next();
+};
+
+export const validateTicketDetails = (req, res, next) => {
+  let ticketId = ticketValidity(req.body).trim();
+
+  if (!ticketId) {
+    const err = new Error("No Id send.");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (typeof ticketId !== "number") {
+    const err = new Error("Unprocessible entities");
+    err.statusCode = 429;
+    throw err;
+  }
+
+  req.ticketId = ticketId;
 };
